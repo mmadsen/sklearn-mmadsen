@@ -106,7 +106,8 @@ est = ParameterizedDNNClassifier(input_dimension=20,
         output_dimension=10,
 		num_dense_hidden=2,
 		epochs=2,
-		hidden_sizes=[1000,2000,1000])
+		hidden_sizes=[1000,2000,1000],
+        verbose=0)
 
 grid_search = GridSearchCV(est, params, n_jobs = 1, verbose = 1)
 grid_search.fit(X_train, y_train)

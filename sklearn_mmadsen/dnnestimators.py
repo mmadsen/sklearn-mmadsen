@@ -50,6 +50,7 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
     momentum: float, required.  Momentum value for Nesterov momentum gradient descent.
     epochs:  int, required.  Number of epochs to train unless early stopped.
     batch_size: int, required.  Size of mini batches to use during training.
+    verbose: int, required.  Print progress information on training if 1, quiet if 0
 
     """
 
@@ -65,7 +66,8 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
                  decay=1e-6,
                  momentum=0.9,
                  epochs=100,
-                 batch_size=500):
+                 batch_size=500,
+                 verbose=1):
 
         self.input_dim = input_dimension
         self.output_dim = output_dimension
@@ -79,6 +81,7 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
         self.sgd_momentum = momentum
         self.epochs = epochs
         self.batch_size = batch_size
+        self.verbose = verbose
 
     def fit(self, x, y):
         model = Sequential()
@@ -108,7 +111,7 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
                                                nb_epoch=self.epochs,
                                                batch_size=self.batch_size,
                                                validation_split=0.1,
-                                               verbose=1,
+                                               verbose=self.verbose,
                                                show_accuracy=True,
                                                callbacks=[self.early_stopping])
 
@@ -133,7 +136,8 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
             'decay': self.sgd_decay,
             'momentum': self.sgd_momentum,
             'epochs': self.epochs,
-            'batch_size': self.batch_size
+            'batch_size': self.batch_size,
+            'verbose': self.verbose
         }
 
     def set_params(self, **parameters):
