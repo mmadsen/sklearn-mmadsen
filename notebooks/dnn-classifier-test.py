@@ -12,7 +12,7 @@
 # The following test harness does a simple grid search cross validation over a synthetic classification data set with 10K data points and 10 classes.  
 # 
 
-# In[ ]:
+# In[1]:
 
 import random
 import numpy as np 
@@ -30,8 +30,10 @@ from sklearn.metrics import classification_report
 
 from sklearn_mmadsen import ParameterizedDNNClassifier
 
+get_ipython().magic(u'matplotlib inline')
 
-# In[ ]:
+
+# In[2]:
 
 ## Seaborn confusion matrix heatmap
 def confusion_heatmap(y_test, y_pred, labels):
@@ -41,20 +43,20 @@ def confusion_heatmap(y_test, y_pred, labels):
                      xticklabels=labels, yticklabels=labels)
 
 
-# In[ ]:
+# In[3]:
 
 ###### Replication #######
 
 #random.seed(7112)
 
 
-# In[ ]:
+# In[4]:
 
 df_x = pd.read_csv("../testdata/classification-10k-10classes-x.csv.gz")
 df_y = pd.read_csv("../testdata/classification-10k-10classes-y.csv.gz")
 
 
-# In[ ]:
+# In[5]:
 
 ############ prepare data ###########
 
@@ -78,6 +80,7 @@ x_train_rows = X_train.shape[0]
 x_train_cols = X_train.shape[1]
 x_test_rows = X_test.shape[0]
 x_test_cols = X_test.shape[1]
+y_test_cols = y_test.shape[1]
 
 # make sure the data arrays are the correct shape, or Theano will never let you hear the end of it...
 X_train = X_train.reshape(x_train_rows, x_train_cols)
@@ -92,7 +95,7 @@ print "X_test: ",X_test.shape
 print "y_test: ",y_test.shape 
 
 
-# In[ ]:
+# In[6]:
 
 params = {
 	'clf__dropout_fraction': [0.9, 0.5],
@@ -117,7 +120,7 @@ history = grid_search.best_estimator_.get_history()
 actual_epoch_count = len(history['acc'])
 
 
-# In[ ]:
+# In[7]:
 
 print "============= Best Estimator from GridSearchCV =============="
 
@@ -128,7 +131,7 @@ for param in sorted(best_params.keys()):
     print("param: %s: %r" % (param, best_params[param]))
 
 
-# In[ ]:
+# In[8]:
 
 print "============== Evaluation on Holdout Test Set ============="
 
@@ -140,7 +143,7 @@ print "accuracy on test: %s" % accuracy_score(actuals, predictions)
 print(classification_report(actuals, predictions))
 
 
-# In[ ]:
+# In[9]:
 
 # build a graph of the training/validation accuracy versus training epoch
 # to look for overfitting
@@ -166,9 +169,9 @@ plt.title('Training and Validation Accuracy By Epoch', fontsize='large')
 plt.show()
 
 
-# In[ ]:
+# In[10]:
 
-labels = range(0, x_train_cols)
+labels = range(0, y_test_cols)
 confusion_heatmap(actuals, predictions, labels)
 
 
