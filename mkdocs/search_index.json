@@ -1,0 +1,39 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "sklearn-mmadsen\n\n\nAdditional functions and classes that augment scikit-learn and use the SKL \nAPI.  \n\n\nCategories\n\n\nDeep Neural Networks\n\n\nGraph Similarity\n\n\nCommands\n\n\nREMOVE THIS LATER\n\n\n\n\nmkdocs serve\n - Start the live-reloading docs server.\n\n\nmkdocs build\n - Build the documentation site.\n\n\nmkdocs help\n - Print this help message.\n\n\n\n\nProject layout\n\n\nmkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    ...       # Other markdown pages, images and other files.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#sklearn-mmadsen", 
+            "text": "Additional functions and classes that augment scikit-learn and use the SKL \nAPI.", 
+            "title": "sklearn-mmadsen"
+        }, 
+        {
+            "location": "/#categories", 
+            "text": "Deep Neural Networks  Graph Similarity", 
+            "title": "Categories"
+        }, 
+        {
+            "location": "/#commands", 
+            "text": "REMOVE THIS LATER   mkdocs serve  - Start the live-reloading docs server.  mkdocs build  - Build the documentation site.  mkdocs help  - Print this help message.", 
+            "title": "Commands"
+        }, 
+        {
+            "location": "/#project-layout", 
+            "text": "mkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    ...       # Other markdown pages, images and other files.", 
+            "title": "Project layout"
+        }, 
+        {
+            "location": "/dnn/", 
+            "text": "", 
+            "title": "Deep Neural Nets"
+        }, 
+        {
+            "location": "/graph/", 
+            "text": "", 
+            "title": "Graph Similarity"
+        }
+    ]
+}
