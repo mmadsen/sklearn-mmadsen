@@ -1,0 +1,6 @@
+site_name: sklearn-mmadsen
+pages:
+- Home: index.md
+- Deep Neural Nets: dnn.md
+- Graph Similarity: graph.md
+theme: readthedocs
