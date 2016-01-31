@@ -27,13 +27,23 @@
         }, 
         {
             "location": "/dnn/", 
-            "text": "", 
+            "text": "Deep Neural Networks", 
             "title": "Deep Neural Nets"
         }, 
         {
-            "location": "/graph/", 
+            "location": "/dnn/#deep-neural-networks", 
             "text": "", 
+            "title": "Deep Neural Networks"
+        }, 
+        {
+            "location": "/graph/", 
+            "text": "Graph Similarity #", 
             "title": "Graph Similarity"
+        }, 
+        {
+            "location": "/graph/#graph-similarity", 
+            "text": "", 
+            "title": "Graph Similarity #"
         }
     ]
 }
