@@ -83,7 +83,7 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
         self.batch_size = batch_size
         self.verbose = verbose
 
-    def fit(self, x, y):
+    def fit(self, X, y):
         model = Sequential()
         model.add(Dense(input_dim=self.input_dim, output_dim=self.hidden_dim[0],
                         init='glorot_uniform', activation=self.dense_activation))
@@ -106,7 +106,7 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
         model.compile(loss='binary_crossentropy', optimizer=solver)
         self.compiled_model = model
         self.early_stopping = EarlyStopping(monitor='val_loss', patience=2)
-        self.history = self.compiled_model.fit(x,
+        self.history = self.compiled_model.fit(X,
                                                y,
                                                nb_epoch=self.epochs,
                                                batch_size=self.batch_size,
@@ -115,11 +115,11 @@ class ParameterizedDNNClassifier(BaseEstimator, ClassifierMixin):
                                                show_accuracy=True,
                                                callbacks=[self.early_stopping])
 
-    def predict(self, x):
-        return self.compiled_model.predict_classes(x, batch_size=self.batch_size)
+    def predict(self, X):
+        return self.compiled_model.predict_classes(X, batch_size=self.batch_size)
 
-    def score(self, x, y):
-        preds = self.compiled_model.predict_classes(x, batch_size=self.batch_size)
+    def score(self, X, y):
+        preds = self.compiled_model.predict_classes(X, batch_size=self.batch_size)
         actuals = np.argmax(y, axis=1)
         return accuracy_score(actuals, preds)
 
