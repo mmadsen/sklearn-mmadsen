@@ -11,10 +11,12 @@ Description here
 
 import numpy as np
 import pprint as pp
+import pandas as pd
 import networkx as nx
 from sklearn.base import BaseEstimator
+import logging as log
 
-from .mathutils import weighted_mode
+from ..utils  import weighted_mode
 
 def check_list_of_graphs(l):
     if isinstance(l, list) == False:
@@ -40,11 +42,27 @@ class GraphEigenvalueNearestNeighbors(BaseEstimator):
 
     """
 
-    def __init__(self, spectral_fraction = 0.9, n_neighbors = 10):
+    def __init__(self, spectral_fraction = 0.9, n_neighbors = 10, debug=0):
         self.num_neighbors = n_neighbors
         self.spectral_fraction = spectral_fraction
-        pass
+        self.debug = debug
+        if debug == 1:
+            log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
+        else:
+            log.basicConfig(level=log.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 
+    def get_params(self, deep=True):
+        return {
+            'spectral_fraction': self.spectral_fraction,
+            'n_neighbors': self.num_neighbors,
+            'debug': self.debug,
+        }
+
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+
+        return self
 
 
     def fit(self, X, y):
@@ -69,7 +87,7 @@ class GraphEigenvalueNearestNeighbors(BaseEstimator):
 
         """
 
-        check_list_of_graphs()
+        check_list_of_graphs(X)
 
         self.id_to_graph_map = dict()
         self.id_to_class_map = dict()
@@ -95,7 +113,7 @@ class GraphEigenvalueNearestNeighbors(BaseEstimator):
             Class labels for each data sample.
         """
 
-        check_list_of_graphs()
+        check_list_of_graphs(X)
 
         # vector for the predicted classes
         y_pred = []
@@ -127,23 +145,46 @@ class GraphEigenvalueNearestNeighbors(BaseEstimator):
                         smallest_dist[indices[0]] = train_graph_dist
                         graph_for_neighbor_map[indices[0]] = id
 
-                print smallest_dist
-
             # smallest_dist and graph_for_neighbor_map now contain the smallest N distances between target_graph
             # and the training set.
-            print "final smallest_dist: ", smallest_dist
-            print "final map: ", graph_for_neighbor_map
+            log.debug("final smallest distance: %s", smallest_dist)
+            log.debug("final map: %s", graph_for_neighbor_map)
 
             neighbor_classes = [self.id_to_class_map[id] for id in graph_for_neighbor_map.values()]
-            modal_class = weighted_mode(neighbor_classes, weights)
-            print "most common class for target graph: %s is %s" % (target_graph, modal_class)
+            modal_class = weighted_mode(neighbor_classes, weights)[0]
+            #print "most common class for target graph: %s is %s" % (target_graph, modal_class[0])
             # if there is a tie, break it randomly
-            if len(modal_class) > 1:
+            if modal_class.size > 1:
                 modal_class = np.random.choice(modal_class, size=1)
-                print "breaking tie by choosing class: %s" % modal_class
-            y_pred.append(modal_class)
+                log.debug("breaking tie by choosing class: %s", modal_class)
+            y_pred.append(int(modal_class[0]))
 
         return np.asarray(y_pred)
+
+    def predict_distance_to_train(self, g):
+        """For a graph g, returns the spectral distances from g to all of the training samples X, along with
+        the class label for each training sample X_i.
+
+        Parameters
+        ----------
+        g : NetworkX graph object - test sample
+
+        Returns
+        -------
+        df : Pandas data frame
+            Spectral distance from g to each training sample X, along with the class labels of the X_i.
+        """
+        graph_ids = self.id_to_graph_map.keys()
+        class_list = []
+        distance_list = []
+        for id in graph_ids:
+            train_graph = self.id_to_graph_map[id]
+            distance_list.append(self._graph_spectral_similarity(g, train_graph, self.spectral_fraction))
+            class_list.append(self.id_to_class_map[id])
+        return pd.DataFrame(data=[class_list, distance_list])
+
+
+
 
 
     ######## Private Methods #######

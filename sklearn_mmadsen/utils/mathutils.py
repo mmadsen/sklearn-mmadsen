@@ -7,7 +7,7 @@
 Description here
 
 """
-
+import numpy as np
 
 def weighted_mode(a, w, axis=0):
     """Returns an array of the weighted modal (most common) value in a

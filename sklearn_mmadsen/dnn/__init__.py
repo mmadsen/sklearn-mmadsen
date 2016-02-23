@@ -7,3 +7,4 @@
 Description here
 
 """
+from dnnestimators import ParameterizedDNNClassifier

@@ -7,3 +7,4 @@
 Description here
 
 """
+from graph_similarity import GraphEigenvalueNearestNeighbors
