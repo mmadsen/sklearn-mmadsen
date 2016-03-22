@@ -181,7 +181,13 @@ class GraphEigenvalueNearestNeighbors(BaseEstimator):
             train_graph = self.id_to_graph_map[id]
             distance_list.append(self._graph_spectral_similarity(g, train_graph, self.spectral_fraction))
             class_list.append(self.id_to_class_map[id])
-        return pd.DataFrame(data=[class_list, distance_list])
+
+        data = {}
+        data["model"] = class_list
+        data["distance"] = distance_list
+
+
+        return pd.DataFrame(data=data)
 
 
 

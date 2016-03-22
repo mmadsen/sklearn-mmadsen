@@ -1,4 +1,4 @@
 
 # This file is updated from Git information by running 'python setup.py
 # version'.
-__version__ = 'deea18'
+__version__ = '914f59'
